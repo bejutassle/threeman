@@ -1,2 +1,1 @@
-# threeman
-ThreeMan Web Framework
+# ThreeMan Web Framework
