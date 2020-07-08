@@ -1,0 +1,76 @@
+{% extends "content.twig" %}
+{% block content %}
+<section class="container-fluid">
+    <form id="userGroupAdd" data-form="true" form="add" action="{{url('user', ['insertGroupAction'])}}" method="POST" data-type="JSON">
+        <input type="hidden" name="token" value="{{csrf_token}}">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="h5 mb-1 text-gray-800">{{pagetitle}}</h1>
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.name'|t}}</label>
+                                <input type="text" class="form-control" name="name">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.access'|t}}</label>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" style="padding: 0px 12px;" data-access="checkbox" data-access-type="true">{{'admin.form.all-selected'|t}}</button>
+                                    <button type="button" class="btn btn-primary" style="padding: 0px 12px;" data-access="checkbox" data-access-type="false">{{'admin.form.all-unselected'|t}}</button>
+                                </div>
+                                <div class="checkbox" data-nested-checkbox="true">
+                                    {% import "macro/list_user_group.twig" as list %}
+                                    {{list.groupList(groupAccess, 0, 0, groupChildAccess, 0, 0)}}
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.status'|t}}</label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="status" value="1" checked>
+                                        {{'admin.form.active'|t}}
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="status" value="0">
+                                        {{'admin.form.passive'|t}}
+                                    </label>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <input type="submit" value="{{'admin.form.submit'|t}}" class="btn btn-block btn-primary btn-lg">
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </form>
+</section>
+<script type="text/nanoscript">
+    $('button[data-access^="checkbox"]').on('click', function(event) {
+    event.preventDefault();
+    $dataVal = $(this).data('access-type');
+    if($dataVal == true){
+      $('input[type="checkbox"][name^="access"]').iCheck('check');
+    }else{
+      $('input[type="checkbox"][name^="access"]').iCheck('uncheck');
+    }
+});
+</script>
+{% endblock %}

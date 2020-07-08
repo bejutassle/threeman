@@ -1,0 +1,20 @@
+{% if app.server('HTTP_X_PJAX') is null %}
+{% include '/layout/header.twig' %}
+{% endif %}
+{% set output %}
+<div class="{{app.config('app.view.fragment')}}" data-title="{{title|htmlspecialchars_decode}}">
+    {% include "/layout/script.twig" %}
+	{% include 'widget/slider.twig' with {'status': widget.slider, 'sliders': sliders} only %}
+    {% block content %}{% endblock %}
+</div>
+{% endset %}
+{% if tpl.minify %}
+{% spaceless %}
+{{output}}
+{% endspaceless %}
+{% else %}
+{{output}}
+{% endif %}
+{% if app.server('HTTP_X_PJAX') is null %}
+{% include '/layout/footer.twig' %}
+{% endif %}

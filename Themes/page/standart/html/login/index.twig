@@ -1,0 +1,60 @@
+{% extends "/login/content.twig" %}
+{% block content %}
+<div class="container">
+   <div class="row">
+      <div class="col-md-8 offset-md-2 col-sm-12 offset-sm-0">
+         <div class="logincart">
+            <div class="row">
+               <div class="col-md-6 col-sm-12">
+                  <div class="loginLeft">
+                     <span class="login-img"><img src="{{img('logo_login.jpg', 'site')}}" alt="" /></span>
+                     <span class="login-text"></span>
+                  </div>
+               </div>
+               <div class="col-md-6 col-sm-12">
+                  <div class="loginRight">
+                     <div class="login-title">ÜYE GİRİŞİ</div>
+                     <div class="steps" id="steps">
+                        <div class="line"></div>
+                        <div class="stepActive" id="loginStep1">1</div>
+                        <div class="stepPassive" id="loginStep2">2</div>
+                     </div>
+                     <form id="{{str.random(10)}}" data-form="true" form="default" action="{{url('current')}}" method="POST" data-type="JSON" autocomplete="{{str.random(10)}}">
+                        <input type="hidden" name="token" value="{{csrf_token}}">
+                        <div class="stepShow" id="login1">
+                           <div class="form-group">
+                              <input type="text" class="form-control" id="tckno" name="tckno" placeholder="TC Kimlik Numaranızı Giriniz...">
+                              <span class="information"></span>
+                           </div>
+                           <div class="form-group" style="display: none" id="divUyari">
+                              <label>Geçersiz T.C Kimlik No girdiniz!</label>
+                           </div>
+                           <button type="submit" class="btn btn-send" id="step1">GÖNDER</button>
+                        </div>
+                        <div class="stepHide" id="studentLogin">
+                           <div class="form-group">
+                              <input type="password" class="form-control" id="sms-code"
+                                 placeholder="Telefonunuza Gelen Şifreyi Giriniz..." name="smsCode">
+                           </div>
+                           <div class="form-group" style="display: none" id="divSifreUyari">
+                              <label>Hatalı şifre girdiniz!</label>
+                           </div>
+                           <div style="color:white; font-size:15px;">Lütfen şifrenizi <span id="time">00:50</span> saniye içerisinde giriniz!</div>
+                           <button type="submit" class="btn btn-send" id="studentLoginSubmit">GİRİŞ</button>
+                        </div>
+                        <div class="stepHide" id="instructorLogin">
+                           <div class="form-group">
+                              <input type="password" class="form-control" id="password"
+                                 placeholder="Eğitmen şifrenizi giriniz..." name="password">
+                           </div>
+                           <button type="submit" class="btn btn-send" id="instructorLoginSubmit">GİRİŞ</button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

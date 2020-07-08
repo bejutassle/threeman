@@ -1,0 +1,42 @@
+<IfModule mod_rewrite.c>
+
+<IfModule mod_negotiation.c>
+    DirectorySlash Off
+    Options -MultiViews
+    Options +FollowSymLinks
+    Options -Indexes
+    DirectoryIndex index.php
+</IfModule>
+
+    ## Begin - Security
+    # Block all direct access for these folders
+    RedirectMatch 404 (.git|tests|.AbiSuite|nbproject|.idea)
+    # Block access to specific file types for these system folders
+    RedirectMatch 404 (vendor)/(.*)\.(txt|xml|md|html|yaml|php|pl|py|cgi|twig|tpl|sh|bat|dist|json|exe)
+    # Block access to specific file types for these themes folders
+    RedirectMatch 404 (twig|tpl)
+    # Block all direct access to .md files:
+    RedirectMatch 404 \.md
+    # Block access to specific files in the root folder
+    RedirectMatch 404 (composer.lock|composer.json|\.htaccess|LICENSE)
+    ## End - Security
+
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^img/(.*)/(.*)$ Storage/media/img/$1/$2 [L]
+    RewriteRule ^img/(.*)$ Storage/media/img/site/$1 [L]
+    RewriteRule ^static/(.*)/(.*)$ Storage/$1/$2 [L]
+    RewriteRule ^layout/(.*)/(.*)/(.*)/(.*)/(.*)$ Themes/$1/$2/$3/$4/$5 [L]
+    # Set REQUEST_SCHEME (standard environment variable in Apache 2.4)
+    RewriteCond %{HTTPS} off
+    RewriteRule .* - [E=REQUEST_SCHEME:http]
+    RewriteCond %{HTTPS} on
+    RewriteRule .* - [E=REQUEST_SCHEME:https]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteRule ^(.*)$ index.php?$1 [L,QSA]
+    ErrorDocument 403 /index.php
+    ErrorDocument 404 /index.php
+    ErrorDocument 500 /index.php
+</IfModule>

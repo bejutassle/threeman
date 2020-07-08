@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="{{app.config('language.default')}}">
+<head>
+    {% block head %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {{app.config('app.developer.environment') == 'prod' ? '<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">'}} 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{title|htmlspecialchars_decode}}</title>
+    <meta name="language" content="{{app.config('language.default')}}" />
+    <meta name="keywords" content="{{keywords|default(app.option('keywords'))|htmlspecialchars_decode}}" />
+    <meta name="description" content="{{description|default(app.option('description'))|htmlspecialchars_decode}}" />
+    <meta name="robots" content="index, follow, odp" />
+    <meta name="googlebot" content="index, follow, odp" />
+    <base href="{{url('')}}" />
+    <link rel="shortcut icon" href="{{img('favicon.ico')}}">
+    {% block stylesheets %}
+    {{('<link href="{{assets_url}}" type="text/css" rel="stylesheet">'|stylesheet([
+    assets('css/bootstrap/*'),
+    assets('css/style.css')],
+    'cssrewrite,cssmin,clean', 'load'))}}
+    {{('<link href="{{assets_url}}" type="text/css" rel="stylesheet">'|stylesheet([
+    assets('css/plugin/*')
+    ], 'cssrewrite,cssmin,clean', 'load'))}}
+    {% endblock %}
+    <script type="text/javascript">
+    var settings = {{app.option("json")|json_encode()}};
+    </script>
+    {% endblock %}
+</head>
+
+<body>
+    <!-- header -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container">
+            <div class="position-relative navContainer">
+                <a class="navbar-brand" href="{{url('')}}">
+                    <img src="{{img('logo.jpg')}}" alt="" /></a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    {% if headerMenu %}
+                    <ul class="navbar-nav ml-auto" role="tablist">
+                     {% import 'macro/header-menu.twig' as headerMenuLinks %}
+                     {% for category in headerMenu %}
+                     {{ headerMenuLinks.headerMenuList(category) }}
+                     {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div class="dropdown notificationDropdown">
+                    <button class="btn btn-notification dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="/img/notifications.png" alt="">
+                        <!-- <% if(notifications.length > 0) { %><span><%= notifications.length %></span> <% } %>  -->
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                        {#
+                        <a class="dropdown-item di-notifications" href="#">
+                            <%= notification.text %>
+                            <!--<span><%= notification.date %></span>--></a>
+                        #}
+                    </div>
+                </div>
+                <div class="dropdown profileDropdown">
+                    <button 
+                        type="button"
+                        class="btn btn-profile dropdown-toggle" 
+                        id="profile" 
+                        data-toggle="dropdown" 
+                        aria-haspopup="true" 
+                        aria-expanded="false">Emre Emir
+                        <span class="level">Level</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right1" aria-labelledby="profile">
+                        <a class="dropdown-item" href="{{url('account')}}"><img src="/img/profile-icon.png">Profilim</a>
+                        <a class="dropdown-item" href="{{url('login', ['logout'])}}"><img src="/img/logout-icon.png">Çıkış</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>

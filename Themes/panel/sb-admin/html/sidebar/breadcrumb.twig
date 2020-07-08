@@ -1,0 +1,11 @@
+  	{% for breadcrumb in breadcrumbs %}
+    {% if loop.first %}
+    <li><a href="{{url('')}}"><i class="fa fa-dashboard"></i> {{'admin.home'|t}}</a></li>
+    {% endif %}
+    {% if loop.index != loop.length %}
+	<li><a href="{{breadcrumb.url}}">{% if breadcrumb.icon %}<i class="fa fa-{{breadcrumb.icon}}"></i>{% endif %}{{breadcrumb.name}}</a></li>
+    {% endif %}
+    {% if loop.last %}
+    <li class="active">{{breadcrumb.name}}</li>
+    {% endif %}
+  	{% endfor %}

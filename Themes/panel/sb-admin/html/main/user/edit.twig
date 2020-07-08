@@ -1,0 +1,167 @@
+{% extends "content.twig" %}
+{% block content %}
+<section class="container-fluid">
+    <form id="{{str.random(10)}}" data-form="true" form="refresh" action="{{url('user', ['updateAction'])}}" method="POST" data-type="JSON" autocomplete="{{str.random(10)}}">
+        <input type="hidden" name="token" value="{{csrf_token}}">
+        <input type="hidden" name="hash" value="{{encrypt(user.userID)}}">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="h5 mb-1 text-gray-800">{{pagetitle}}</h1>
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.username'|t}}</label>
+                                <input type="text" class="form-control" name="username" value="{{user.userName}}">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.first-name'|t}}</label>
+                                <input type="text" class="form-control" name="first_name" value="{{user.userFirstName}}">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.last-name'|t}}</label>
+                                <input type="text" class="form-control" name="last_name" value="{{user.userLastName}}">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.email'|t}}</label>
+                                <input type="text" class="form-control" name="email" value="{{user.userEmail}}">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.password'|t}}</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" name="password" data-size="12" data-character-set="a-z,A-Z,0-9,#" autocomplete="off">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary" data-toggle="password">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary" data-generator="password">
+                                            <i class="fa fa-random"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        {% if user.userID != 1 %}
+                        <div class="form-group" data-main-collapse="mode-status">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.authority'|t}}</label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="mod" value="1" {% if user.userMod==1 %}checked{% endif %}>
+                                        {{'admin.form.yes'|t}}
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="mod" value="0" {% if user.userMod==0 %}checked{% endif %}>
+                                        {{'admin.form.no'|t}}
+                                    </label>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" data-sub-collapse="mode-status" data-val-collapse="1">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.user-group'|t}}</label>
+                                {% for group in userGroup %}
+                                {% if group.userGroupID == user.userGroup %}
+                                {% set checked = 'checked="checked"' %}
+                                {% else %}
+                                {% set checked = '' %}
+                                {% endif %}
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="group" value="{{group.userGroupID}}" {{checked}}>
+                                        {{group.userGroupName}}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.status'|t}}</label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="status" value="1" {% if user.userStatus==1 %}checked{% endif %}>
+                                        {{'admin.form.active'|t}}
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="status" value="0" {% if user.userStatus==0 %}checked{% endif %}>
+                                        {{'admin.form.passive'|t}}
+                                    </label>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+        <div class="row mb-30">
+            <div class="col-lg-12">
+                <input type="submit" value="{{'admin.form.submit'|t}}" class="btn btn-block btn-primary btn-lg">
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </form>
+</section>
+<style>
+    .mb-30{
+    margin-bottom: 30px;
+}
+</style>
+<script type="text/nanoscript">
+    $('input[type^="radio"][name^="mod"]').on('ifClicked', function(event){
+    $('input[type^="radio"][name^="mod"]').iCheck('uncheck');
+    $val = $(this).val();
+    $defaultVal = ($val == 1 ? 0 : 1);
+    $indexVal = ($val == 1 ? 1 : 0);
+    if($val == 1){
+        swal({
+          title: lang.get('txt.swal-mod-title'),
+          text: lang.get('txt.swal-mod-text'),
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: lang.get('txt.swal-mod-confirm-button'),
+          cancelButtonText: lang.get('txt.swal-cancel-button'),
+        }).then(function(result) {
+
+           if(result.value){
+            $('input[type^="radio"][name^="mod"]').eq($defaultVal).iCheck('check');
+            return;
+           }
+
+           if(result.dismiss = 'cancel'){
+            $('input[type^="radio"][name^="mod"]').eq($indexVal).iCheck('check');
+            return;
+           }
+           
+        });
+    }
+
+    event.preventDefault();      
+});
+
+</script>
+{% endblock %}

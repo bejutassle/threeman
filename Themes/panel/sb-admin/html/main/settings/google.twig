@@ -1,0 +1,99 @@
+{% extends "content.twig" %}
+{% block content %}
+
+<section class="container-fluid">
+
+<form id="settingsUpdate" data-form="true" form="refresh" action="{{url('settings')}}" method="POST" data-type="JSON">
+  <input type="hidden" name="token" value="{{csrf_token}}">
+  <input type="hidden" name="form" value="google">
+
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h5 mb-1 text-gray-800">{{pagetitle}}</h1>
+            <div class="card shadow mb-4">
+                <div class="card-body">
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.analytics-code'|t}}</label>
+                                <textarea class="form-control" name="google-analytics" cols="30" rows="10">{{app.option('google-analytics')}}</textarea>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-main-collapse="recaptcha-status">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.recaptcha'|t}}</label>
+                                <div class="radio">
+                                  <label>
+                                    <input type="radio" name="recaptcha" value="true" {% if app.option('recaptcha') == 'true' %}checked{% endif %}>
+                                    {{'admin.form.active'|t}}
+                                  </label>
+                                </div>
+                                <div class="radio">
+                                  <label>
+                                    <input type="radio"  name="recaptcha" value="false" {% if app.option('recaptcha') == 'false' %}checked{% endif %}>
+                                    {{'admin.form.passive'|t}}
+                                  </label>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="recaptcha-status" data-val-collapse="true">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.recaptcha-code'|t}}</label>
+                                <textarea class="form-control" name="recaptcha-code" cols="30" rows="10">{{app.option('recaptcha-code')}}</textarea>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="recaptcha-status" data-val-collapse="true">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.recaptcha-secret-key'|t}}</label>
+                                <input type="text" class="form-control" name="recaptcha-secret" value="{{app.option('recaptcha-secret')}}">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="recaptcha-status" data-val-collapse="true">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.recaptcha-site-key'|t}}</label>
+                                <input type="text" class="form-control" name="recaptcha-site-key" value="{{app.option('recaptcha-site-key')}}">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="recaptcha-status" data-val-collapse="true">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.recaptcha-url'|t}}</label>
+                                <input type="text" class="form-control" name="recaptcha-url" value="{{app.option('recaptcha-url')}}">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /.col -->
+
+    </div>
+    <!-- /.row -->
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <input type="submit" value="{{'admin.form.submit'|t}}" class="btn btn-block btn-primary btn-lg">
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+  </form>
+</section>
+
+<script type="text/nanoscript">
+</script>
+
+{% endblock %}

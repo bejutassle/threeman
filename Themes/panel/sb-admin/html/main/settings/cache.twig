@@ -1,0 +1,58 @@
+{% extends "content.twig" %}
+{% block content %}
+
+<section class="container-fluid">
+
+<div class="row">
+    <div class="col-12">
+        <h1 class="h5 mb-1 text-gray-800">{{pagetitle}}</h1>
+        <div class="card shadow mb-4">
+            <div class="card-body table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                          <tr>
+                              <th class="col-xs-3">{{'admin.block.name'|t}}</th>
+                              <th class="col-xs-2">{{'admin.block.size'|t}}</th>
+                              <th class="col-xs-2">{{'admin.block.last-modified'|t}}</th>
+                              <th class="col-xs-1 text-center">{{'admin.block.actions'|t}}</th>
+                          </tr>
+                    </thead>
+                    <tbody>
+                            {% for file in datafiles %}
+                                {% set fileModifiedDate = filemtime(file.getPathname) %}
+                                <tr>
+                                    <td>{{file.getRelativePathname}}</td>
+                                    <td>{{file.getPathname|dbytes}}</td>
+                                    <td>{{fileModifiedDate|date("Y-m-d H:m:s")}}</td>
+                                    <td class="text-center">
+                                    <a data-action="delete" data-id="{{encrypt(file.getRelativePathname)}}" href="{{url('settings', ['delete'])}}" class="btn btn-block btn-danger btn-xs">{{'admin.block.delete'|t}}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            {% for file in viewfiles %}
+                                {% set fileModifiedDate = filemtime(file.getPathname) %}
+                                <tr>
+                                    <td>{{file.getRelativePathname}}</td>
+                                    <td>{{file.getPathname|dbytes}}</td>
+                                    <td>{{fileModifiedDate|date("Y-m-d H:m:s")}}</td>
+                                    <td class="text-center">
+                                    <a data-action="delete" data-id="{{encrypt(file.getRelativePathname)}}" href="{{url('settings', ['delete'])}}" class="btn btn-block btn-danger btn-xs">{{'admin.block.delete'|t}}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
+
+</section>
+
+<script type="text/nanoscript">
+</script>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% macro groupList(this, parent, level, child, selected) %}
+{% import _self as self %}
+<ul class="std-list">
+    {% for menu in this if menu.status == 1 %}
+    {% if menu.id not in selected %}
+    {% set checked = '' %}
+    {% else %}
+    {% set checked = 'checked' %}
+    {% endif %}
+    {% if parent == menu.parent %}
+    <li data-parent="{{parent}}" data-id="{{menu.id}}">
+        {% if menu.id in child %}
+        <label>
+            <input type="checkbox" name="access[]" value="{{menu.id}}" {{checked}}>
+            {{menu.name}}
+        </label>
+        {{self.groupList(this, menu.id, level +1, child, selected)}}
+        {% else %}
+        <label>
+            <input type="checkbox" name="access[]" value="{{menu.id}}" {{checked}}>
+            {{menu.name}}
+        </label>
+        {% endif %}
+    </li>
+    {% endif %}
+    {% else %}
+    {% endfor %}
+</ul>
+{% endmacro %}

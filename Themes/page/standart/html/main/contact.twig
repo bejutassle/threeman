@@ -1,0 +1,32 @@
+{% extends "content.twig" %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 mt-4">
+            <div class="card p-3 shadow-sm">
+                <form id="contact" action="/contact" method="POST">
+                    <div class="row">
+                        <div class="col-lg-8 offset-md-2">
+                            <div class="row">
+                                <div class="col-md-12 text text-center">
+                                    <div class="alert alert-dark" role="alert">Tüm soru ve önerileriniz için aşağıdaki iletişim formu aracılığı ile bizimle iletişime geçebilirsiniz.</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 my-4">
+                                    <textarea placeholder="Mesajınız" name="message" class="border"></textarea>
+                                </div>
+                                <div class="col-md-6 offset-md-3">
+                                    <a href="#" alt="" class="btn" id="contactSubmitButton">GÖNDER</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

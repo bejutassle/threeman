@@ -1,0 +1,132 @@
+{% extends "content.twig" %}
+{% block content %}
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h5 mb-1 text-gray-800 text-uppercase">{{pagetitle}}</h1>
+            <p class="mb-4">Slider, eklediğiniz resimlerin çeşitli efektlerle geçiş yapmasını sağlayan görsel bir uygulamadır. Slider aynı zamanda kullanıcının geçiş yapan resimlerden herhangi bir resme tıkladığı zaman o resme ait sayfaya kolaylıkla geçiş yapmasını da sağlar.</p>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 text-uppercase">
+                    <a href="{{url('')}}" class="btn btn-primary btn-icon-split btn-sm" data-history="back">
+                        <span class="icon text-white">
+                            <i class="fas fa-undo-alt"></i>
+                        </span>
+                        <span class="text">{{lang('back')}}</span>
+                    </a>
+                    <a href="{{url('current', ['add'])}}" class="btn btn-success btn-icon-split btn-sm">
+                        <span class="icon text-white">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">{{'action.add'|t({'name': 'Slider'})}}</span>
+                    </a>
+                </div>
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <div class="box-tools">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <form id="{{str.random(10)}}" data-form="filter" data-change-result="true" form="filter" action="{{url('current')}}" method="GET">
+                                                    <div class="input-group input-group-sm">
+                                                        <select class="form-control" name="f" data-bselect="true" data-live-search="true" data-style-base="" data-style="btn-primary" multiple data-selected-text-format="count > 3" multiple>
+                                                            <option value="unique">{{lang('all-unique')}}</option>
+                                                            <optgroup label="{{lang('admin.block.sort')}}" data-max-options="1">
+                                                                <option value="sliderID" data-sort="desc" data-form-name="f" data-icon="fa fa-sort-amount-desc">{{lang('new-to-old')}}</option>
+                                                                <option value="sliderID" data-sort="asc" data-form-name="f" data-icon="fa fa-sort-amount-asc">{{lang('old-to-new')}}</option>
+                                                            </optgroup>
+                                                            <optgroup label="{{lang('admin.block.type')}}" data-max-options="1">
+                                                                {% for type in sliderTypes %}
+                                                                <option value="sliderType" data-sort="{{type}}" data-form-name="w">{{'where-by'|t({'name' : lang(str.slug(type))})}}</option>
+                                                                {% endfor %}
+                                                            </optgroup>
+                                                            <option value="all" data-sort="division" data-form-name="a" data-icon="fa fa-list">{{lang('show-all')}}</option>
+                                                        </select>
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-5 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <form id="{{str.random(10)}}" data-form="search" form="search" action="{{url('current')}}" method="GET">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" name="q" class="form-control pull-right" placeholder="{{'placeholder.search'|t}}" autocomplete="off">
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                       <div class="col-xl-1 col-md-12 col-sm-12">
+                                          <div class="form-group">
+                                            <form id="{{str.random(10)}}" data-form="filter" form="filter" action="{{url('current')}}" method="GET">
+                                              <div class="input-group input-group-sm">
+                                                  <select class="form-control" name="l" data-bselect="true" data-style-base="btn-primary" data-style="">
+                                                    <option value="10" data-sort="none" data-form-name="l">10</option>
+                                                    <option value="25" data-sort="none" data-form-name="l">25</option>
+                                                    <option value="50" data-sort="none" data-form-name="l">50</option>
+                                                    <option value="100" data-sort="none" data-form-name="l">100</option>
+                                                    <option value="all" data-sort="none" data-form-name="l">{{lang('all')}}</option>
+                                                    </optgroup>
+                                                  </select>
+                                              </div>
+                                            </form>
+                                          </div>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="card-body table-responsive">
+                    <table class="table table-hover table-bordered" data-toggle="table">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th class="w-30" data-sortable="true">{{'admin.block.name'|t}}</th>
+                                <th class="w-20" data-sortable="true">{{'admin.block.type'|t}}</th>
+                                <th class="w-20" data-sortable="true">{{'admin.block.date'|t}}</th>
+                                <th class="w-10 text-center">{{'admin.block.actions'|t}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for slider in sliders %}
+                            <tr>
+                                <td>{{slider.sliderName}}</td>
+                                <td>{{lang(str.slug(slider.sliderType))}}</td>
+                                <td>{{slider.sliderDate}}</td>
+                                <td>
+                                    <a href="{{url('current', ['edit', '?hash=' ~ encrypt(slider.sliderID)])}}" title="{{'admin.block.edit'|t}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                    <a data-action="delete" data-id="{{encrypt(slider.sliderID)}}" href="{{url('current', ['delete'])}}" title="{{'admin.block.delete'|t}}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                    {% if slider.sliderStatus == 1 %}
+                                    <a data-action="passive" data-id="{{encrypt(slider.sliderID)}}" href="{{url('current', ['unpublished'])}}" title="{{'action.unpublished'|t({'name': "Slider'ı"})}}" class="btn btn-warning btn-sm"><i class="fa fa-square-o"></i></a>
+                                    {% else %}
+                                    <a data-action="activate" data-id="{{encrypt(slider.sliderID)}}" href="{{url('current', ['published'])}}" title="{{'action.published'|t({'name': "Slider'ı"})}}" class="btn btn-success btn-sm"><i class="fas fa fa-check-square-o"></i></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="text-center" colspan="9">{{'admin.no-records'|t}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix">
+                    {% include "sidebar/pagination.twig" with {page: page} only %}
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+<script type="text/nanoscript"></script>
+{% endblock %}

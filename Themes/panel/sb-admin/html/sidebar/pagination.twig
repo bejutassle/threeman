@@ -1,0 +1,72 @@
+{% if page is iterable %}
+{% set currentFilters = page.currentFilters %}
+{% set currentPage = page.currentPage %}
+{% set paginationPath = page.pageSplit %}
+{% set lastPage = page.totalPages %}
+{% set showAlwaysFirstAndLast = page.showFirstAndLastPage %}
+{% set extremePagesLimit = page.startListPageLimit %}
+{% set nearbyPagesLimit = page.viewPageLimit %}
+{% if lastPage > 1 %}
+{# the number of pages that are displayed around the active page #}
+{% set nearbyPagesLimit = 5 %}
+<ul class="pagination no-margin pull-right">
+    {% if currentPage != 1 %}
+    <li class="page-item">
+        <a class="page-link" href="{{currentFilters}}1{{paginationPath}}">&lt;&lt;</a>
+    </li>
+    {% endif %}
+    {% if currentPage > 1 %}
+    <li class="page-item">
+        <a class="page-link" href="{{currentFilters}}{{currentPage-1}}{{paginationPath}}">&lt;</a>
+    </li>
+    {% for i in range(1, extremePagesLimit) if ( i < currentPage - nearbyPagesLimit ) %} <li class="page-item">
+        <a class="page-link" href="{{currentFilters}}{{i}}{{paginationPath}}">{{i}}</a>
+        </li>
+        {% endfor %}
+        {% if extremePagesLimit + 1 < currentPage - nearbyPagesLimit %} <li class="page-item disabled">
+            <span class="page-link" style="cursor: default;">...</span>
+            </li>
+            {% endif %}
+            {% for i in range(currentPage-nearbyPagesLimit, currentPage-1) if ( i > 0 ) %}
+            <li class="page-item">
+                <a class="page-link" href="{{currentFilters}}{{i}}{{paginationPath}}">{{i}}</a>
+            </li>
+            {% endfor %}
+            {% elseif showAlwaysFirstAndLast %}
+            <li class="page-item disabled">
+                <a class="page-link">&lt;</a>
+            </li>
+            {% endif %}
+            <li class="page-item active">
+                <a class="page-link">{{currentPage}}</a>
+            </li>
+            {% if currentPage < lastPage %} {% for i in range(currentPage+1, currentPage + nearbyPagesLimit) if ( i <=lastPage ) %} <li class="page-item">
+                <a class="page-link" href="{{currentFilters}}{{i}}{{paginationPath}}">{{i}}</a>
+                </li>
+                {% endfor %}
+                {% if (lastPage - extremePagesLimit) > (currentPage + nearbyPagesLimit) %}
+                <li class="page-item disabled">
+                    <span class="page-link" style="cursor: default;">...</span>
+                </li>
+                {% endif %}
+                {% for i in range(lastPage - extremePagesLimit+1, lastPage) if ( i > currentPage + nearbyPagesLimit ) %}
+                <li class="page-item">
+                    <a class="page-link" href="{{currentFilters}}{{i}}{{paginationPath}}">{{i}}</a>
+                </li>
+                {% endfor %}
+                <li class="page-item">
+                    <a class="page-link" href="{{currentFilters}}{{currentPage+1}}{{paginationPath}}">&gt;</a>
+                </li>
+                {% elseif showAlwaysFirstAndLast %}
+                <li class="page-itemdisabled">
+                    <a class="page-link">&gt;</a>
+                </li>
+                {% endif %}
+                {% if currentPage != lastPage %}
+                <li class="page-item">
+                    <a class="page-link" href="{{currentFilters}}{{lastPage}}{{paginationPath}}">&gt;&gt;</a>
+                </li>
+                {% endif %}
+</ul>
+{% endif %}
+{% endif %}

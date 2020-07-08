@@ -1,0 +1,129 @@
+{% extends "content.twig" %}
+{% block content %}
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h5 mb-1 text-gray-800">{{pagetitle}}</h1>
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 text-uppercase">
+                    <a href="{{url('')}}" class="btn btn-secondary btn-icon-split btn-sm" data-history="back">
+                        <span class="icon text-white">
+                            <i class="fas fa-undo-alt"></i>
+                        </span>
+                        <span class="text">{{lang('back')}}</span>
+                    </a>
+                    <a href="{{url('current', ['addAction'])}}" class="btn btn-primary btn-icon-split btn-sm">
+                        <span class="icon text-white">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">Kullanıcı Oluştur</span>
+                    </a>
+                </div>
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-group">
+                                <div class="box-tools">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <form id="{{str.random(10)}}" data-form="filter" data-change-result="true" form="filter" action="{{url('current')}}" method="GET">
+                                                    <div class="input-group input-group-sm">
+                                                        <select class="form-control" name="f" data-bselect="true" data-live-search="true" data-style-base="" data-style="btn-primary" multiple data-selected-text-format="count > 3" multiple>
+                                                            <option value="unique">{{lang('all-unique')}}</option>
+                                                            <optgroup label="{{lang('admin.block.status')}}" data-max-options="1">
+                                                                <option value="userStatus" data-sort="1" data-form-name="w" data-icon="fa fa-circle">{{lang('active')}}</option>
+                                                                <option value="userStatus" data-sort="0" data-form-name="w" data-icon="fa fa-circle-o">{{lang('passive')}}</option>
+                                                            </optgroup>
+                                                            <optgroup label="{{lang('admin.block.group')}}" data-max-options="1">
+                                                                {% for group in groups %}
+                                                                <option value="userGroup" data-sort="{{group.userGroupID}}" data-form-name="w">{{group.userGroupName}}</option>
+                                                                {% endfor %}
+                                                            </optgroup>
+                                                            <optgroup label="{{lang('admin.block.sort')}}" data-max-options="1">
+                                                                <option value="userID" data-sort="desc" data-form-name="f" data-icon="fa fa-sort-amount-desc">{{lang('new-to-old')}}</option>
+                                                                <option value="userID" data-sort="asc" data-form-name="f" data-icon="fa fa-sort-amount-asc">{{lang('old-to-new')}}</option>
+                                                            </optgroup>
+                                                            <option value="all" data-sort="division" data-form-name="a" data-icon="fa fa-list">{{lang('show-all')}}</option>
+                                                        </select>
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-filter"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <form id="{{str.random(10)}}" data-form="search" form="search" action="{{url('user')}}" method="GET">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" name="q" class="form-control pull-right" placeholder="{{'placeholder.search'|t}}" autocomplete="off">
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="card-body table-responsive">
+                    <table class="table table-hover table-bordered" data-toggle="table">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-2" data-sortable="true">{{'admin.block.username'|t}}</th>
+                                <th class="col-xs-2" data-sortable="true">{{'admin.block.name'|t}}</th>
+                                <th class="col-xs-1" data-sortable="true">{{'admin.block.email'|t}}</th>
+                                <th class="col-xs-2" data-sortable="true">{{'admin.block.last-login'|t}}</th>
+                                <th class="col-xs-2" data-sortable="true">{{'admin.block.register-date'|t}}</th>
+                                <th class="col-xs-1 text-center">{{'admin.block.actions'|t}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            {% if user.userLastLogin %}
+                            {% set userLastLogin = user.userLastLogin %}
+                            {% else %}
+                            {% set userLastLogin = lang('unknow') %}
+                            {% endif %}
+                            <tr>
+                                <td>{{user.userName}}</td>
+                                <td>{{ '%s %s'|format(user.userFirstName, user.userLastName) }}</td>
+                                <td>{{user.userEmail}}</td>
+                                <td>{{userLastLogin}}</td>
+                                <td>{{user.userRegisterDate}}</td>
+                                <td class="text-center">
+                                    <a href="{{url('current', ['editAction', '?hash=' ~ encrypt(user.userID)])}}" title="{{'admin.block.edit'|t}}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                    <a data-action="delete" data-id="{{encrypt(user.userID)}}" href="{{url('current', ['deleteAction'])}}" title="{{'admin.block.delete'|t}}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                    {% if user.userStatus == 1 %}
+                                    <a data-action="passive" data-id="{{encrypt(user.userID)}}" href="{{url('current', ['passiveAction'])}}" class="btn btn-dark btn-sm" title="{{'admin.block.passivity-is'|t}}"><i class="fas fa-lock"></i></a>
+                                    {% else %}
+                                    <a data-action="activate" data-id="{{encrypt(user.userID)}}" href="{{url('current', ['activateAction'])}}" class="btn btn-success btn-sm" title="{{'admin.block.activate'|t}}"><i class="fas fa-unlock"></i></a>
+                                    {% endif %}
+                                    <a class="btn btn-info btn-sm text-white" data-url="{{url('current', ['activityAction', '?hash=' ~ encrypt(user.userID)])}}" data-pointer data-modal="true" data-size="lg" data-title="{{'admin.block.activity-record'|t}}" data-json='{"hash": "{{encrypt(user.userID)}}"}' data-submit-button="false" title="{{'admin.block.activity-record'|t}}"><i class="fas fa-book"></i></a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td class="text-center" colspan="7">{{'admin.no-records'|t}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix">
+                    {% include "sidebar/pagination.twig" with {page: page} only %}
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+<script type="text/nanoscript"></script>
+{% endblock %}

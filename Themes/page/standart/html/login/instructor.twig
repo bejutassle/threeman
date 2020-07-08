@@ -1,0 +1,38 @@
+{% extends "/login/content.twig" %}
+{% block content %}
+<div class="container">
+   <div class="row">
+      <div class="col-md-8 offset-md-2 col-sm-12 offset-sm-0">
+         <div class="logincart">
+            <div class="row">
+               <div class="col-md-6 col-sm-12">
+                  <div class="loginLeft">
+                     <span class="login-img"><img src="{{img('logo_login.jpg', 'site')}}" alt="" /></span>
+                     <span class="login-text"></span>
+                  </div>
+               </div>
+               <div class="col-md-6 col-sm-12">
+                  <div class="loginRight">
+                     <div class="login-title">EĞİTMEN GİRİŞİ</div>
+                     <div class="steps" id="steps">
+                        <div class="line"></div>
+                        <div class="stepPassive" id="loginStep1">1</div>
+                        <div class="stepActive" id="loginStep2">2</div>
+                     </div>
+                     <form id="{{str.random(10)}}" data-form="true" form="login" action="{{url('login', ['instructor'])}}" method="POST" data-type="JSON" autocomplete="{{str.random(10)}}">
+                        <input type="hidden" name="token" value="{{csrf_token}}">
+                        <input type="hidden" name="auth" value="{{data}}">
+                        <div class="form-group">
+                           <input type="password" class="form-control" name="password" placeholder="Eğitmen şifrenizi giriniz...">
+                           <span class="information"></span>
+                        </div>
+                        <button type="submit" class="btn btn-send">GİRİŞ</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}

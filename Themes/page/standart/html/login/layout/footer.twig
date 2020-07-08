@@ -1,0 +1,17 @@
+
+{% block javascript %}
+      {{('<script type="text/javascript">{{assets_url}}</script>'|javascript([assets('js/jquery/latets/jquery.js')], 'minify,compress,clean', 'dump'))}}
+      {{('<script type="text/javascript">{{assets_url}}</script>'|javascript([
+      assets('js/jquery/plugin/*.js')
+      ], 'minify,clean,seperator', 'dump'))}}
+      {{('<script type="text/javascript">{{assets_url}}</script>'|javascript([assets('js/functions/*.js')], 'minify,compress,clean', 'dump'))}}
+      {{('<script type="text/javascript">{{assets_url}}</script>'|javascript([assets('js/*')], 'minify,compress,clean', 'dump'))}}
+      <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", function(event) {
+                PjaxInit.init(settings.site.container, 1, 0, false);
+            });
+      </script>
+{% endblock %}
+
+</body>
+</html>

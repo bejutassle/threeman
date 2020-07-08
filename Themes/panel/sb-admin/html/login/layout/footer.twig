@@ -1,0 +1,40 @@
+{% block javascript %}
+      {{('<script type="text/javascript" src="{{assets_url}}"></script>'|javascript([assets('js/jquery/latets/jquery.js')], 'minify,compress,clean', 'load'))}}
+      {{('<script type="text/javascript" src="{{assets_url}}"></script>'|javascript([
+      assets('js/static/moment.js'), 
+      assets('js/static/locale/'~app.config('language.default')~'.js'), 
+      assets('js/jquery/plugin/*.js'),
+      assets('js/jquery/plugin/i18n/'~app.config('language.default')~'.js'), 
+      assets('js/jquery/plugin/bootstrap-select-i18n/'~app.config('language.default')~'.js'), 
+      ], 'minify,clean,seperator', 'load'))}}
+      {{('<script type="text/javascript" src="{{assets_url}}"></script>'|javascript([
+      assets('js/jquery/wysiwyg/*.js'), 
+      assets('js/jquery/wysiwyg/langs/'~app.config('language.default')~'.js'), 
+      assets('js/jquery/wysiwyg/plugins/trumbowyg.colors.js'),
+      assets('js/jquery/wysiwyg/plugins/trumbowyg.fontfamily.js'),
+      assets('js/jquery/wysiwyg/plugins/trumbowyg.fontsize.js'),
+      assets('js/jquery/wysiwyg/plugins/trumbowyg.history.js'),
+      assets('js/jquery/wysiwyg/plugins/trumbowyg.table.js'),
+      assets('js/jquery/wysiwyg/plugins/trumbowyg.noembed.js'),
+      assets('js/jquery/wysiwyg/plugins/trumbowyg.pasteembed.js'),
+      ], 'minify,compress,clean', 'load'))}}
+      {{('<script type="text/javascript" src="{{assets_url}}"></script>'|javascript([
+      assets('js/jquery/chartjs/*.js'), 
+      assets('js/jquery/chartjs/plugins/*'),
+      ], 'minify,compress,clean', 'load'))}}
+      {{('<script type="text/javascript" src="{{assets_url}}"></script>'|javascript([assets('js/functions/*.js')], 'minify,compress,clean', 'load'))}}
+      {{('<script type="text/javascript" src="{{assets_url}}"></script>'|javascript([assets('js/*')], 'minify,compress,clean', 'load'))}}
+      <script type="text/javascript">
+        var lang = new Lang({
+            messages: {
+              '{{app.config('language.default')}}.txt': {{'js'|t|json_encode()}}
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            PjaxInit.init(settings.site.container, 1, 0, 5000);
+        });
+      </script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "content.twig" %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 mt-4">
+            <div class="card p-3 shadow-sm">
+                <div class="d-flex justify-content-center align-items-center" style="height: 73vh;">
+                    <h1 class="mr-3 pr-3 align-top border-right inline-block align-content-center">
+                    	<img src="{{img(app.option('logo'), 'site')}}" class="img-fluid">
+                    </h1>
+                    <div class="inline-block align-middle">
+                        <h2 class="font-weight-normal lead">{{app.option('maintenance-content')|htmlspecialchars_decode}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

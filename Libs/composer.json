@@ -1,0 +1,44 @@
+{
+    "config": {
+        "optimize-autoloader": true
+    },
+    "autoload": {
+        "files": ["../Kernel/Helper/Functions.php"]
+    },
+    "require": {
+        "kriswallsmith/assetic": "1.4.*@dev",
+        "lmammino/jsmin4assetic": "1.0.*",
+        "natxet/cssmin": "*",
+        "ptachoire/cssembed": "~1.0",
+        "leafo/scssphp": "~0.1",
+        "patchwork/jsqueeze": "2.0",
+        "twig/twig": "^2.0",
+        "phroute/phroute": "^2.1",
+        "bocharsky-bw/arrayzy": "^0.5.1",
+        "jenssegers/agent": "^2.3",
+        "nesbot/carbon": "^1.21",
+        "symfony/http-foundation": "^3.1",
+        "psr/log": "^1.0",
+        "danielstjules/stringy": "~3.1.0",
+        "phpmailer/phpmailer": "~6.0",
+        "intervention/image": "^2.4",
+        "rcastera/session": "^1.0",
+        "mjohnson/decoda": "6.*",
+        "intervention/imagecache": "^2.3",
+        "guzzlehttp/psr7": "^1.4",
+        "monolog/monolog": "^1.23",
+        "mrclay/minify": "*",
+        "symfony/filesystem": "^4.0",
+        "hybridauth/hybridauth": "3.0.0-beta.1",
+        "illuminate/view": "^5.6",
+        "delfimov/translate": "^2.4",
+        "splitbrain/php-cli": "^1.1",
+        "codedungeon/php-cli-colors": "^1.10",
+        "tatocaster/monolog-json-unicode-pretty-formatter": "^1.0",
+        "joshcam/mysqli-database-class": "^2.9",
+        "pda/pheanstalk": "^3.1",
+        "kevinrob/guzzle-cache-middleware": "^3.2",
+        "symfony/cache": "^4.2",
+        "dompdf/dompdf": "^0.8.5"
+    }
+}

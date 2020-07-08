@@ -1,0 +1,28 @@
+{% macro menuList(this, parent, level, child) %}
+{% import _self as self %}
+{% set ul_attr = parent > 0 ? 'sub-menu' : 'wraplist' %}
+{% set menuCount = this|length %}
+{% for menu in this if menu.status == 1 %}
+{% if parent == menu.parent %}
+{% if menu.id in child %}
+<hr class="sidebar-divider">
+<!-- Heading -->
+<div class="sidebar-heading">{{menu.name}}</div>
+{{self.menuList(this, menu.id, level +1, child)}}
+{% else %}
+<li class="nav-item">
+    <a class="nav-link" href="{{menu.url}}">
+        <i class="fas fa-fw fa-{{menu.icon}}"></i>
+        <span>{{menu.name}}</span></a>
+</li>
+{% endif %}
+</li>
+{% endif %}
+{% else %}
+<li>
+    <a>
+        <span>{{'admin.no-menu'|t}}</span>
+    </a>
+</li>
+{% endfor %}
+{% endmacro %}

@@ -1,0 +1,172 @@
+{% extends "content.twig" %}
+{% block content %}
+<section class="container-fluid">
+    <form id="{{str.random(10)}}" data-form="true" form="add" action="{{url('current')}}" method="POST" data-type="JSON" autocomplete="{{str.random(10)}}" enctype="multipart/form-data">
+        <input type="hidden" name="token" value="{{csrf_token}}">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="h5 mb-1 text-gray-800">{{pagetitle}}</h1>
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.name'|t}}</label>
+                                <input type="text" class="form-control" name="name">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.title'|t}}</label>
+                                <input type="text" class="form-control" name="title">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.type'|t}}</label>
+                                <select class="form-control" name="type" data-option-list="parent">
+                                    <option value="" selected>{{'select-type'|t}}...</option>
+                                    {% for key, type in types %}
+                                    <option value="{{type}}">{{type|t|capitalize}}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.parent'|t}}</label>
+                                <select class="form-control" name="parent" data-select="true" data-option="parent" data-search-url="{{url('menu', ['menutypes'])}}">
+                                    <option value="" selected>{{'select-parent'|t}}...</option>
+                                </select>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.link'|t}}</label>
+                                <input type="text" class="form-control" name="link">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.link-target'|t}}</label>
+                                <select class="form-control" name="target" data-select="true">
+                                    {% for key, target in targets %}
+                                    <option value="{{target}}" {{target == '_parent' ? 'selected="selected"' : ''}}>{{target}} ({{lang('admin.form.' ~ target)}})</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.link-type'|t}}</label>
+                                <select class="form-control" name="link_type" data-select="true">
+                                    {% for key, link in links %}
+                                    <option value="{{link}}">{{lang(str.slug(link))|capitalize}}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.icon'|t}}</label>
+                                <input type="text" class="form-control" name="icon">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.style-class'|t}}</label>
+                                <input type="text" class="form-control" name="class">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.presentation'|t}}</label>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="show-type[user]" checked>
+                                        {{'users'|t}}
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="show-type[guest]" checked>
+                                        {{'guests'|t}}
+                                    </label>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.status'|t}}</label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="status" value="1" checked>
+                                        {{'admin.form.active'|t}}
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="status" value="0">
+                                        {{'admin.form.passive'|t}}
+                                    </label>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <input type="submit" value="{{'admin.form.submit'|t}}" class="btn btn-block btn-primary btn-lg">
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </form>
+</section>
+<script type="text/nanoscript">
+    $('[data-option-list="parent"]').select2({
+          width: '100%',
+          theme: 'bootstrap'
+    }).on('select2:select', function(e){
+        $selectData = e.params.data;
+        $parentOption = $(this).data('option-list');
+        $parentSelect = $('select[data-option="'+$parentOption+'"]');
+        $parentURL = $parentSelect.data('search-url');
+
+        $.getJSON($parentURL, {
+        type: $selectData['id'],
+        token: settings.token,
+        cache: $.now()
+        }).done(function(data) {
+
+                 $parentSelect.find('option').remove();
+
+                  $.each(data.results, function(i, item) {
+
+                        $parentSelect.append($('<option>', { 
+                            value: item.menuID,
+                            text : item.menuName 
+                        }));
+
+                  });
+
+        });
+
+    });
+
+</script>
+{% endblock %}

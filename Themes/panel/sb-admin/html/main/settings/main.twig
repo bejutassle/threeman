@@ -1,0 +1,182 @@
+{% extends "content.twig" %}
+{% block content %}
+
+<section class="container-fluid">
+    <form id="settingsUpdate" data-form="true" form="refresh" action="{{url('settings')}}" method="POST" data-type="JSON">
+        <input type="hidden" name="token" value="{{csrf_token}}">
+        <input type="hidden" name="form" value="main">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="h5 mb-1 text-gray-800">{{pagetitle}}</h1>
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.name'|t}}</label>
+                                <input type="text" class="form-control" name="site-name" value="{{app.option('site-name')}}">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 mb-sm-3">
+                                <div class="controls">
+                                    <label class="control-label">{{'admin.form.logo'|t}}</label>
+                                    <input 
+                                    type="file" 
+                                    name="logo" 
+                                    data-file="true" 
+                                    data-text="{{'admin.select-file'|t}}" 
+                                    data-placeholder="{{'admin.no-select-file'|t}}" 
+                                    data-input="true" 
+                                    data-dragdrop="true" 
+                                    data-badge="true" 
+                                    data-badgeName="badge-danger" 
+                                    data-btnClass="btn-primary rounded-right-0 rounded-left data-pointer" 
+                                    data-htmlIcon="<span class='fa fa-folder-open-o pr-1'></span>" 
+                                    data-buttonBefore="true"
+                                    >
+                                    <span class="information"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <img data-img="preview" class="field-image-preview img-thumbnail" style="display: inline;" src="{{img(app.option('logo'), 'site')}}">
+                            </div>
+                        </div>
+                            {#
+                            <div class="form-group">
+                                <div class="controls">
+                                    <label class="control-label">{{'admin.form.protocol'|t}}</label>
+                                    <input type="text" class="form-control" name="protocol" value="{{app.option('protocol')}}">
+                                    <span class="information"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="controls">
+                                    <label class="control-label">{{'admin.form.address'|t}}</label>
+                                    <input type="text" class="form-control" name="address" value="{{app.option('address')}}">
+                                    <span class="information"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="controls">
+                                    <label class="control-label">{{'admin.form.path'|t}}</label>
+                                    <input type="text" class="form-control" name="dir" value="{{app.option('dir')}}">
+                                    <span class="information"></span>
+                                </div>
+                            </div>
+                            #}
+                            <div class="form-group">
+                                <div class="controls">
+                                    <label class="control-label">{{'admin.form.locale'|t}}</label>
+                                    <select class="form-control" name="locale" data-select="true">
+                                        {% for key, val in app.config('language.available') %}
+                                        {% if val == app.option('locale') %}
+                                        {% set selected = 'selected' %}
+                                        {% else %}
+                                        {% set selected = '' %}
+                                        {% endif %}
+                                        <option value="{{val}}" {{selected}}>{{locale_get_display_language(val)}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="information"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="controls">
+                                    <label class="control-label">{{'admin.form.time-zone'|t}}</label>
+                                    <select class="form-control" name="time-zone" data-select="true">
+                                        {% for region, utc in app.config('timezone') %}
+                                            <optgroup label="{{region}}">
+                                         {% for item, var in utc %}
+                                            {% if item == app.option('time-zone') %}
+                                            {% set selected = 'selected' %}
+                                            {% else %}
+                                            {% set selected = '' %}
+                                            {% endif %}
+                                             <option value="{{item}}" {{selected}}>{{var}}</option>
+                                         {% endfor %}
+                                             </optgroup>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="information"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="controls">
+                                    <label class="control-label">{{'admin.form.week-start'|t}}</label>
+                                    <select class="form-control" name="week-start" data-select="true">
+                                        {% for week in range(1, 7) %}
+                                        {% if week == app.option('week-start') %}
+                                        {% set selected = 'selected' %}
+                                        {% else %}
+                                        {% set selected = '' %}
+                                        {% endif %}
+                                        <option value="{{week}}" {{selected}}>{{week}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="information"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-main-collapse="cookie-policy-status">
+                                <div class="controls">
+                                    <label class="control-label">{{'admin.form.cookie-policy-notification'|t}}</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="cookie-policy" value="1" {{app.option('cookie-policy') == 1 ? 'checked' : ''}}>
+                                            {{'admin.form.show'|t}}
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="cookie-policy" value="0" {{app.option('cookie-policy') == 0 ? 'checked' : ''}}>
+                                            {{'admin.form.hide'|t}}
+                                        </label>
+                                    </div>
+                                    <span class="information"></span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-sub-collapse="cookie-policy-status" data-val-collapse="1">
+                                <div class="controls">
+                                    <label class="control-label">{{'admin.form.cookie-policy-url'|t}}</label>
+                                    <input type="text" class="form-control" name="cookie-policy-url" value="{{app.option('cookie-policy-url')}}">
+                                    <span class="information"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <input type="submit" value="{{'admin.form.submit'|t}}" class="btn btn-block btn-primary btn-lg">
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+    </form>
+</section>
+<script type="text/nanoscript">
+    $(document).on('change', '[data-file="true"]', function(event) {
+    event.preventDefault();
+    ImagePreview(this);
+});
+
+function ImagePreview(input) {
+     for(var i =0; i< input.files.length; i++){
+         if (input.files[i]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+               var img = $('[data-img="preview"]');
+               img.attr('src', e.target.result);
+               img.show();
+            }
+            reader.readAsDataURL(input.files[i]);
+           }
+        }
+}
+</script>
+
+{% endblock %}

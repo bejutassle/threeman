@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="{{app.config('language.default')}}">
+   <head>
+      {% block head %}
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      {{app.config('app.developer.environment') == 'prod' ? '<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">'}} 
+      <title>{{title|htmlspecialchars_decode}}</title>
+      <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+      <base href="{{url('')}}"/>
+      <link rel="shortcut icon" href="{{img('favicon.ico')}}">
+      {% block stylesheets %}
+      <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap" rel="stylesheet">
+      {{('<link href="{{assets_url}}" type="text/css" rel="stylesheet">'|stylesheet([assets('css/bootstrap/*')], 'cssrewrite,cssmin,clean', 'load'))}}
+      {{('<link href="{{assets_url}}" type="text/css" rel="stylesheet">'|stylesheet([assets('css/plugin/*')], 'cssrewrite,mincss,clean', 'load'))}}
+      {{('<link href="{{assets_url}}" type="text/css" rel="stylesheet">'|stylesheet([assets('css/plugin/wysiwyg/*')], 'cssrewrite', 'load'))}}
+      {{('<link href="{{assets_url}}" type="text/css" rel="stylesheet">'|stylesheet([assets('css/*')], 'cssrewrite,mincss', 'load'))}}
+      {% endblock %}
+      <script type="text/javascript">
+         var settings = {{app.option("json")|json_encode()}};
+      </script>
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      {% endblock %}
+   </head>
+   <body id="page-top">
+      <!-- Page Wrapper -->
+      <div id="wrapper">
+      {% include ('/sidebar/sidebar.twig') %}
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+      <!-- Topbar -->
+      <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+         <!-- Sidebar Toggle (Topbar) -->
+         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+         <i class="fa fa-bars"></i>
+         </button>
+         <!-- Topbar Search -->
+         <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" autocomplete="off">
+            <div class="input-group">
+               <input type="text" id="sidebar-search-input" class="form-control bg-light small" placeholder="{{'admin.placeholder.page-search'|t}}" autocomplete="off">
+               <div class="input-group-append">
+                  <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search fa-sm"></i>
+                  </button>
+               </div>
+            </div>
+         </div>
+         <!-- Topbar Navbar -->
+         <ul class="navbar-nav ml-auto">
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+               <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <i class="fas fa-search fa-fw"></i>
+               </a>
+               <!-- Dropdown - Messages -->
+               <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                  <form class="form-inline mr-auto w-100 navbar-search">
+                     <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                           <button class="btn btn-primary" type="button">
+                           <i class="fas fa-search fa-sm"></i>
+                           </button>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </li>
+            <!-- Nav Item - Alerts -->
+            <li class="nav-item dropdown no-arrow mx-1">
+               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-bell fa-fw"></i>
+                  <!-- Counter - Alerts -->
+                  <span class="badge badge-danger badge-counter">0<!-- 3+ --></span>
+               </a>
+               <!-- Dropdown - Alerts -->
+               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                  <h6 class="dropdown-header">Bildirimler</h6>
+                  <a class="dropdown-item d-flex align-items-center" data-pointer>
+                     <div class="mr-3">
+                        <div class="icon-circle border">
+                           <img src="{{img(app.option('logo'))}}" alt="site-logo" class="img-fluid">
+                        </div>
+                     </div>
+                     <div>
+                        <span class="font-weight-bold">{{'admin.no-notification'|t}}</span>
+                     </div>
+                  </a>
+                  <!--
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                     <div class="mr-3">
+                        <div class="icon-circle bg-primary">
+                           <i class="fas fa-file-alt text-white"></i>
+                        </div>
+                     </div>
+                     <div>
+                        <div class="small text-gray-500">December 12, 2019</div>
+                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                     </div>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                     <div class="mr-3">
+                        <div class="icon-circle bg-success">
+                           <i class="fas fa-donate text-white"></i>
+                        </div>
+                     </div>
+                     <div>
+                        <div class="small text-gray-500">December 7, 2019</div>
+                        $290.29 has been deposited into your account!
+                     </div>
+                  </a>
+                  <a class="dropdown-item d-flex align-items-center" href="#">
+                     <div class="mr-3">
+                        <div class="icon-circle bg-warning">
+                           <i class="fas fa-exclamation-triangle text-white"></i>
+                        </div>
+                     </div>
+                     <div>
+                        <div class="small text-gray-500">December 2, 2019</div>
+                        Spending Alert: We've noticed unusually high spending for your account.
+                     </div>
+                  </a>
+                   -->
+                  <a class="dropdown-item text-center small text-gray-500" href="{{url('notifications')}}">Tüm Bildirimler</a>
+               </div>
+            </li>
+            <div class="topbar-divider d-none d-sm-block"></div>
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{app.user('userFullName')}}</span>
+               <img class="img-profile rounded-circle" src="{{img('default-user-image-64x64.png', 'admin')}}">
+               </a>
+               <!-- Dropdown - User Information -->
+               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                  {% for nav in sortNavigation if nav.parent == 1 %}
+                     <a class="dropdown-item" href="{{nav.url}}"><i class="fa fa-{{nav.icon}} fa-sm fa-fw mr-2 text-gray-400"></i>{{'admin.title.settings-page'|t({'name': nav.name})}}</a>
+                  {% endfor %}
+                  {% if sortNavigation %}
+                  <div class="dropdown-divider"></div>
+                  {% endif %}
+                  <a class="dropdown-item" href="{{url('login', ['logout'])}}" data-pjax="false" data-logout="true"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>{{'admin.nav-menu.logout'|t}}</a>
+               </div>
+            </li>
+         </ul>
+      </nav>
+      <!-- End of Topbar -->
+      <div class="d-flex flex-row justify-content-center homepage-front-logo">
+         <div class="offset_img img-fluid mx-auto"></div>
+      </div>

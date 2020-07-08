@@ -1,0 +1,20 @@
+# Specify filepatterns you want git to ignore.
+
+Storage/cache/*
+Storage/cache/data/*
+Storage/cache/view/*
+Storage/cache/view/assets/*
+Storage/cache/view/assets/*/*
+Storage/cache/view/assets/*/*/*
+Storage/cache/view/fadedes/*
+Storage/cache/view/fadedes/*/*
+Storage/cache/view/fadedes/*/*/*
+Storage/cache/view/image/*
+Storage/cache/view/image/*/*
+Storage/cache/view/image/*/*/*
+Storage/logs/*
+Storage/session/*
+Storage/media/*
+App/Config/Database.php
+App/Config/App.php
+!.gitkeep

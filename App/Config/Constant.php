@@ -1,0 +1,4 @@
+<?php 
+
+define('PREFIX', '_tm_');
+define('PRIVATE_KEY', '4E76D8489152972FEA374FE7633F3');

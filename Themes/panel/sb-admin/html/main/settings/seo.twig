@@ -1,0 +1,123 @@
+{% extends "content.twig" %}
+{% block content %}
+
+<section class="container-fluid">
+
+<form id="settingsUpdate" data-form="true" form="refresh" action="{{url('settings')}}" method="POST" data-type="JSON">
+  <input type="hidden" name="token" value="{{csrf_token}}">
+  <input type="hidden" name="form" value="seo">
+
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h5 mb-1 text-gray-800">{{pagetitle}}</h1>
+            <div class="card shadow mb-4">
+                <div class="card-body">
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <div data-preview="google"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.title'|t}}</label>
+                                <input type="text" class="form-control" name="title" value="{{app.option('title')}}" maxlength="70"  data-count="char">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.name-separator'|t}}</label>
+                                <input type="text" class="form-control" name="separator" value="{{app.option('separator')}}" maxlength="1"  data-count="char">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                           <div class="controls">
+                              <label class="control-label">{{'admin.form.name-separator-location'|t}}</label>
+                              <div class="radio">
+                                 <label>
+                                 <input type="radio" name="placement" value="1" {% if app.option('placement') == 1 %}checked{% endif %}>
+                                 {{'admin.form.after'|t}}
+                                 </label>
+                              </div>
+                              <div class="radio">
+                                 <label>
+                                 <input type="radio"  name="placement" value="0" {% if app.option('placement') == 0 %}checked{% endif %}>
+                                 {{'admin.form.before'|t}}
+                                 </label>
+                              </div>
+                              <span class="information"></span>
+                           </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.description'|t}}</label>
+                                <textarea class="form-control" name="description" cols="30" rows="5" maxlength="200" data-count="char">{{app.option('description')}}</textarea>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.keywords'|t}}</label>
+                                <select 
+                                class="form-control" 
+                                name="keywords[]" 
+                                data-select="true"
+                                multiple="multiple" 
+                                data-tags="true" 
+                                data-placeholder="{{'admin.placeholder.enter-keyword'|t}}" 
+                                >
+                                {% set selectedKeywords = app.option('keywords')|split(',') %}
+                                {% for key, keywords in selectedKeywords if app.option('keywords') is not empty %}
+                                <option value="{{keywords}}" selected="selected">{{keywords}}</option>
+                                {% endfor %}
+                                </select>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /.col -->
+
+    </div>
+    <!-- /.row -->
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <input type="submit" value="{{'admin.form.submit'|t}}" class="btn btn-block btn-primary btn-lg">
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+  </form>
+</section>
+
+<script type="text/nanoscript">
+    $.seoPreview({
+      google_div: $('[data-preview="google"]'),
+      metadata: {
+        title: $('[name="title"]'),
+        desc: $('[name="description"]'),
+        url: {
+          full_url: "{{app.option('full-address')}}"
+        }
+      },
+      google: {
+          show: true,
+          date: false
+      }
+    });
+</script>
+
+{% endblock %}

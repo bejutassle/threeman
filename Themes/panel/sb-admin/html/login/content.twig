@@ -1,0 +1,18 @@
+{% if app.server('HTTP_X_PJAX') is empty %}
+{% include '/login/layout/header.twig' %}
+{% endif %}
+{% set output %}
+<div class="{{app.config('app.view.fragment')}}" data-title="{{title|htmlspecialchars_decode}}">
+		{% block content %}{% endblock %}
+</div>
+{% endset %}
+{% if tpl.minify %}
+    {% spaceless %}
+     {{output}}
+    {% endspaceless %}
+{% else %}
+	 {{output}}
+{% endif %}
+{% if app.server('HTTP_X_PJAX') is empty %}
+{% include '/login/layout/footer.twig' %}
+{% endif %}

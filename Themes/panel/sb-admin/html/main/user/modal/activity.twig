@@ -1,0 +1,24 @@
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead>
+		  <tr>
+		    <th>Aktivite Türü</th>
+		    <th>Tarih</th>
+		    <th>IP Adresi</th>
+		  </tr>
+		</thead>
+			<tbody>
+			{% for activity in activitys %}
+			  <tr>
+			    <td>{{lang(activity.userActivityType)}}</td>
+			    <td>{{activity.userActivityDate}}</td>
+			    <td>{{activity.userActivityIP}}</td>
+			  </tr>
+			{% else %}
+			  <tr>
+			    <td class="text-center" colspan="3">{{'admin.no-records'|t}}</td>
+			  </tr>
+			{% endfor %}
+			</tbody>
+	</table>
+</div>

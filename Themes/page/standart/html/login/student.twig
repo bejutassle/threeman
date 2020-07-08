@@ -1,0 +1,59 @@
+{% extends "/login/content.twig" %}
+{% block content %}
+<div class="container">
+   <div class="row">
+      <div class="col-md-8 offset-md-2 col-sm-12 offset-sm-0">
+         <div class="logincart">
+            <div class="row">
+               <div class="col-md-6 col-sm-12">
+                  <div class="loginLeft">
+                     <span class="login-img"><img src="{{img('logo_login.jpg', 'site')}}" alt="" /></span>
+                     <span class="login-text"></span>
+                  </div>
+               </div>
+               <div class="col-md-6 col-sm-12">
+                  <div class="loginRight">
+                     <div class="login-title">ÜYE GİRİŞİ</div>
+                     <div class="steps" id="steps">
+                        <div class="line"></div>
+                        <div class="stepPassive" id="loginStep1">1</div>
+                        <div class="stepActive" id="loginStep2">2</div>
+                     </div>
+                     <form id="{{str.random(10)}}" data-form="true" form="login" action="{{url('login', ['student'])}}" method="POST" data-type="JSON" autocomplete="{{str.random(10)}}">
+                        <input type="hidden" name="token" value="{{csrf_token}}">
+                        <input type="hidden" name="auth" value="{{data}}">
+                        <div class="form-group">
+                           <input type="password" class="form-control" name="sms" placeholder="Telefonunuza Gelen Şifreyi Giriniz...">
+                           <span class="information"></span>
+                        </div>
+                        <div class="text-white" style="font-size:15px;">Lütfen şifrenizi <span id="time">00:50</span> saniye içerisinde giriniz!</div>
+                        <button type="submit" class="btn btn-send">GİRİŞ</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<script type="text/nanoscript">
+   var counter = 50;
+   
+   setInterval(function() {
+     counter--;
+     if (counter >= 0) {
+       span = document.getElementById('time');
+       var length = counter.toString().length;
+       if(length < 2){
+         counter = '0'+counter;
+       }
+       span.innerHTML = '00:'+counter;
+     }
+     if (counter === 0) {
+         clearInterval(counter);
+         window.location = 'login';
+     }
+   
+   }, 1000);
+</script>
+{% endblock %}

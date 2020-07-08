@@ -1,0 +1,164 @@
+{% extends "content.twig" %}
+{% block content %}
+
+<section class="container-fluid">
+
+<form id="settingsUpdate" data-form="true" form="refresh" action="{{url('settings')}}" method="POST" data-type="JSON">
+  <input type="hidden" name="token" value="{{csrf_token}}">
+  <input type="hidden" name="form" value="mail">
+
+    <div class="row">
+        <div class="col-12">
+            <h1 class="h5 mb-1 text-gray-800">{{pagetitle}}</h1>
+            <div class="card shadow mb-4">
+                <div class="card-body">
+
+                        <div class="form-group" data-main-collapse="mail-type">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.mail-server-type'|t}}</label>
+                                <div class="radio">
+                                  <label>
+                                    <input type="radio" name="mail-type" value="smtp" {% if app.option('mail-type') == 'smtp' %}checked{% endif %}>
+                                    {{'admin.form.mail-smtp'|t}}
+                                  </label>
+                                </div>
+                                <div class="radio">
+                                  <label>
+                                    <input type="radio"  name="mail-type" value="sendmail" {% if app.option('mail-type') == 'sendmail' %}checked{% endif %}>
+                                    {{'admin.form.mail-send-mail'|t}}
+                                  </label>
+                                </div>
+                                <div class="radio">
+                                  <label>
+                                    <input type="radio"  name="mail-type" value="mailgun" {% if app.option('mail-type') == 'mailgun' %}checked{% endif %}>
+                                    {{'admin.form.mail-gun'|t}}
+                                  </label>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="mail-type" data-val-collapse="smtp">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.mail-host-address'|t}}</label>
+                                <input type="text" class="form-control" name="mail-host" value="{{app.option('mail-host')}}" autocomplete="off">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="mail-type" data-val-collapse="smtp">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.mail-server-port'|t}}</label>
+                                <select class="form-control" name="mail-port" data-select="true">
+                                      <option value="465" {% if app.option('mail-port') == '465' %}selected{% endif %}>465 (SSL)</option>
+                                      <option value="587" {% if app.option('mail-port') == '587' %}selected{% endif %}>587 (TLS)</option>
+                                </select>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="mail-type" data-val-collapse="smtp">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.mail-server-secure-type'|t}}</label>
+                                <select class="form-control" name="mail-secure" data-select="true">
+                                      <option value="ssl" {% if app.option('mail-secure') == 'ssl' %}selected{% endif %}>SSL</option>
+                                      <option value="tls" {% if app.option('mail-secure') == 'tls' %}selected{% endif %}>TLS</option>
+                                      <option value="false" {% if app.option('mail-secure') == 'false' %}selected{% endif %}>{{'none'|t}}</option>
+                                </select>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="mail-type" data-val-collapse="smtp">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.force-smtp-auth'|t}}</label>
+                                {% if app.option('mail-smtp-auth') == 'false' %}
+                                    {% set checkedTrue = '' %}
+                                    {% set checkedFalse = 'checked' %}
+                                {% else %}
+                                    {% set checkedTrue = 'checked' %}
+                                    {% set checkedFalse = '' %}                    
+                                {% endif %}
+                                <div class="radio">
+                                  <label>
+                                    <input type="radio" name="mail-smtp-auth" value="true" {{checkedTrue}}>
+                                    {{'admin.form.yes'|t}}
+                                  </label>
+                                </div>
+                                <div class="radio">
+                                  <label>
+                                    <input type="radio"  name="mail-smtp-auth" value="false" {{checkedFalse}}>
+                                    {{'admin.form.no'|t}}
+                                  </label>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="mail-type" data-val-collapse="smtp">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.smtp-connection-timeout'|t}}</label>
+                                <input type="text" class="form-control" name="mail-timeout" value="{{app.option('mail-timeout')}}" autocomplete="off">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="mail-type" data-val-collapse="smtp">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.smtp-user'|t}}</label>
+                                <input type="text" class="form-control" name="mail-user" value="{{app.option('mail-user')}}" autocomplete="off">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group" data-sub-collapse="mail-type" data-val-collapse="smtp">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.smtp-password'|t}}</label>
+                                <div class="input-group">
+                                <input type="password" class="form-control" name="mail-password-r" value="random" data-size="12" data-character-set="a-z,A-Z,0-9,#" autocomplete="off">
+                                    <div class="input-group-btn">
+                                      <button type="button" class="btn btn-default" data-toggle="password">
+                                        <i class="fa fa-eye"></i>
+                                      </button>
+                                      <button type="button" class="btn btn-default" data-generator="password">
+                                        <i class="fa fa-random"></i>
+                                      </button>
+                                    </div>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.mail-sender-address'|t}}</label>
+                                <input type="text" class="form-control" name="mail-sender" value="{{app.option('mail-sender')}}">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /.col -->
+
+    </div>
+    <!-- /.row -->
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <input type="submit" value="{{'admin.form.submit'|t}}" class="btn btn-block btn-primary btn-lg">
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+  </form>
+</section>
+
+<script type="text/nanoscript">
+</script>
+
+{% endblock %}

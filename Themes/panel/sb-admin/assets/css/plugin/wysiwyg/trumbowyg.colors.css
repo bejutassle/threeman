@@ -1,0 +1,40 @@
+.trumbowyg-dropdown-foreColor,
+.trumbowyg-dropdown-backColor {
+	width: 276px !important;
+	padding: 7px 5px !important;
+}
+
+.trumbowyg-dropdown-foreColor svg,
+.trumbowyg-dropdown-backColor svg {
+	display: none!important;
+}
+
+.trumbowyg-dropdown-foreColor button,
+.trumbowyg-dropdown-backColor button {
+	display: block !important;
+	position: relative !important;
+	float: left !important;
+	text-indent: -9999px !important;
+	height: 20px !important;
+	width: 20px !important;
+	border: 1px solid #333 !important;
+	padding: 0 !important;
+	margin: 2px !important;
+}
+
+.trumbowyg-dropdown-foreColor button:hover::after,
+.trumbowyg-dropdown-foreColor button:focus::after,
+.trumbowyg-dropdown-backColor button:hover::after,
+.trumbowyg-dropdown-backColor button:focus::after {
+	content: " " !important;
+	display: block !important;
+	position: absolute !important;
+	top: -5px !important;
+	left: -5px !important;
+	height: 27px !important;
+	width: 27px !important;
+	background: inherit !important;
+	border: 1px solid #fff !important;
+	box-shadow: #000 0 0 2px !important;
+	z-index: 10 !important;
+}

@@ -1,0 +1,5 @@
+<script type="text/javascript" data-script="core">
+    settings['token'] = '{{csrf_token}}';
+</script>
+{% if app.config('google.analytics.code') %}{{app.config('google.analytics.code')|htmlspecialchars_decode}}{% endif %}
+{% if app.config('google.recaptcha.status') == 'true' %}{{app.config('google.recaptcha.code')|htmlspecialchars_decode}}{% endif %}

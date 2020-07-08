@@ -1,0 +1,35 @@
+{% macro menuList(this, parent, level, child, type) %}
+{% import _self as self %}
+{% set ul_attr = parent > 0 ? 'sub' : 'parent' %}
+<ol class="dd-list">
+    {% for menu in this %}
+    {% if parent == menu.menuParent %}
+    <li class="dd-item dd3-item" data-id="{{menu.menuID}}">
+        {% if menu.menuID in child %}
+        <div class="dd-handle dd3-handle" title="{{'admin.drag'|t}}"></div>
+        <div class="dd3-content">
+            {% if menu.menuParent == 0 and type == 'category' %}
+            <a href="{{url('category', ['edit', '?hash=' ~ encrypt(menu.menuID)])}}">{{menu.menuName}}</a>
+            {% else %}
+            <a href="{{url('menu', ['edit', '?hash=' ~ encrypt(menu.menuID)])}}">{{menu.menuName}}</a>
+            {% endif %}
+        </div>
+        {{ self.menuList(this, menu.menuID, level +1, child, type) }}
+        {% else %}
+        <div class="dd-handle dd3-handle" title="{{'admin.drag'|t}}"></div>
+        <div class="dd3-content">
+            <a href="{{url('menu', ['edit', '?hash=' ~ encrypt(menu.menuID)])}}">{{menu.menuName}}</a>
+        </div>
+        {% endif %}
+    </li>
+    {% endif %}
+    {% else %}
+    <div class="card">
+        <div class="card-body text-center text-primary">
+            <h5 class="card-title"><i class="fa fa-question-circle"></i> {{'admin.no-data-found'|t}}</h5>
+            <p class="card-text">{{'admin.no-records'|t}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</ol>
+{% endmacro %}

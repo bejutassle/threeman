@@ -1,0 +1,54 @@
+{% macro footerMenuList(menu) %}
+{% import _self as self %}
+{% if menu.menuShowUser == 1 and app.is('login') == 1 %}
+{% set show = true %}
+{% elseif menu.menuShowGuest == 1 and app.is('login') != 1 %}
+{% set show = true %}
+{% else %}
+{% set show = false %}
+{% endif %}
+{% if show == 1 %}
+<ul>
+    <li class="text-uppercase">{{menu.menuName}}</li>
+    {% if menu.children is defined %}
+    {% if menu.children|length %}
+    {% for child in menu.children %}
+    {% if child.menuShowUser == 1 and app.is('login') == 1 %}
+    {% set show = true %}
+    {% elseif child.menuShowGuest == 1 and app.is('login') != 1 %}
+    {% set show = true %}
+    {% else %}
+    {% set show = false %}
+    {% endif %}
+    {% if filter_var(child.menuLink, 'FILTER_VALIDATE_URL') %}
+    {% set childLink = child.menuLink %}
+    {% else %}
+    {% set childLink = url(child.menuLink) %}
+    {% endif %}
+    {% if show == 1 %}
+    <li>
+        <a href="{{childLink}}" title="{{child.menuTitle}}" target="{{child.menuLinkTarget}}">
+            {% if child.menuIcon %}
+            <i class="fa fa-{{child.menuIcon}}"></i>
+            <span>{{child.menuName}}</span>
+            {% else %}
+            {{child.menuName}}
+            {% endif %}
+        </a>
+    </li>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+    {% if menu.menuPost is defined %}
+    {% for post in menu.menuPost %}
+    <li>
+        <a href="{{url(post.postSlug, [post.postID])}}">
+            {{post.postTitle|upper}}
+        </a>
+    </li>
+    {% endfor %}
+    {% endif %}
+</ul>
+{% endif %}
+{% endmacro %}

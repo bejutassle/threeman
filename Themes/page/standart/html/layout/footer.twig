@@ -1,0 +1,34 @@
+<footer class="footerdown" id="footer">
+    <div class="container">
+        <p class="m-0 text-center text-white footerLogo">
+            <img src="{{img('totalwhite.png')}}">
+        </p>
+        <p class="m-0 text-center text-white footerText">
+            Tüm hakları saklıdır. Total Turkey Pazarlama A.Ş. {{'now'|date('Y')}}
+        </p>
+    </div>
+</footer>
+
+{% block javascript %}
+{{('<script type="text/javascript" src="{{assets_url}}"></script>'|javascript([assets('js/jquery/latets/jquery.js')], 'minify,compress,clean', 'load'))}}
+{{('<script type="text/javascript" src="{{assets_url}}"></script>'|javascript([assets('js/jquery/plugin/*.js')], 'minify', 'load'))}}
+{{('<script type="text/javascript" src="{{assets_url}}"></script>'|javascript([assets('js/functions/*.js')], 'minify,compress,clean', 'load'))}}
+{{('<script type="text/javascript" src="{{assets_url}}"></script>'|javascript([assets('js/*')], 'minify,compress,clean', 'load'))}}
+{% if app.option('cookie-policy') %}
+{{('<script type="text/javascript">{{assets_url}}</script>'|javascript([assets('js/static/cookie_policy.js')], 'minify,compress,clean', 'dump'))}}
+{% endif %}
+<script type="text/javascript">
+var lang = new Lang({
+    messages: {
+      '{{app.config('language.default')}}.txt': {{'js'|t|json_encode()}}
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    PjaxInit.init(settings.site.container, 1, 0, 5000);
+});
+</script>
+{% endblock %}
+</body>
+
+</html>

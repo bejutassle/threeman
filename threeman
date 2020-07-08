@@ -1,0 +1,38 @@
+#! /usr/bin/env php
+<?php
+/**
+ * ThreeMan Web Application
+ * @author Emre Emir <emre@emreemir.com>
+ * @package Web Command Line Interface
+ * @copyright  It is protected by the GNU General Public License
+ * All Rights Reserved
+ */
+define('_JEXEC', true);
+define('__INIT', dirname(realpath(__FILE__)).'/Init');
+
+ini_set('display_errors', false);
+error_reporting(0);
+
+require_once(__INIT.'/Define.php');
+require_once(__INIT.'/Bootstrap.php');
+
+ob_start();
+
+//ini_set('session.save_path', SESSION);
+if(!session_id()) {
+    session_start();
+}
+
+//Functions
+Boot::Load(HELPER, 'Functions');
+//Composer Autoloader
+Boot::Load(VENDOR, 'autoload');
+//Kernel(Core) Autoloader
+Boot::AutoLoadRegister('Boot::Autoload');
+//Config File Loader
+Boot::Load(CONFIG, '~');
+
+$cli = new Console\Com();
+$cli->run();
+
+ob_end_flush();

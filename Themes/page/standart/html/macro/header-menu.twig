@@ -1,0 +1,85 @@
+{% macro headerMenuList(menu) %}
+{% import _self as self %}
+{% if menu.menuShowUser == 1 and app.is('login') == 1 %}
+{% set show = true %}
+{% elseif menu.menuShowGuest == 1 and app.is('login') != 1 %}
+{% set show = true %}
+{% else %}
+{% set show = false %}
+{% endif %}
+{% if filter_var(menu.menuLink, 'FILTER_VALIDATE_URL') %}
+{% set menuLink = menu.menuLink %}
+{% else %}
+{% set menuLink = url(menu.menuLink) %}
+{% endif %}
+{% if show == 1 %}
+{% if menu.children is defined %}
+<li class="nav-item dropdown submenu">
+    <a href="{{menuLink}}" target="{{menu.menuLinkTarget}}" class="nav-link text-uppercase dropdown-toggle {{menu.menuClass}}" data-toggle="dropdown">{{menu.menuName}}</a>
+    {% elseif menu.menuLinkType == 'post' %}
+<li class="nav-item dropdown submenu">
+    <a href="{{menuLink}}" target="{{menu.menuLinkTarget}}" class="nav-link text-uppercase dropdown-toggle {{menu.menuClass}}" data-toggle="dropdown">{{menu.menuName}}</a>
+    {% elseif menu.menuLinkType == 'category' %}
+<li class="nav-item dropdown submenu">
+    <a href="{{menuLink}}" target="{{menu.menuLinkTarget}}" class="nav-link text-uppercase dropdown-toggle {{menu.menuClass}}" data-toggle="dropdown">{{menu.menuName}}</a>
+    {% else %}
+<li class="nav-item text-uppercase">
+    <a class="nav-link {{menu.menuClass}}" href="{{menuLink}}" target="{{menu.menuLinkTarget}}">{{menu.menuName}}</a>
+    {% endif %}
+    {% if menu.children is defined %}
+    {% if menu.children|length %}
+    <ul class="dropdown-menu">
+        {% for child in menu.children %}
+        {% if child.menuShowUser == 1 and app.is('login') == 1 %}
+        {% set show = true %}
+        {% elseif child.menuShowGuest == 1 and app.is('login') != 1 %}
+        {% set show = true %}
+        {% else %}
+        {% set show = false %}
+        {% endif %}
+        {% if filter_var(child.menuLink, 'FILTER_VALIDATE_URL') %}
+        {% set childLink = child.menuLink %}
+        {% else %}
+        {% set childLink = url(child.menuLink) %}
+        {% endif %}
+        {% if show == 1 %}
+        <li class="dropdown-item">
+            <a href="{{childLink}}" title="{{child.menuTitle}}" target="{{child.menuLinkTarget}}" class="nav-link {{child.menuClass}}">
+                {% if child.menuIcon %}
+                <i class="fa fa-{{child.menuIcon}}"></i>
+                <span>{{child.menuName|htmlspecialchars_decode}}</span>
+                {% else %}
+                {{child.menuName|htmlspecialchars_decode}}
+                {% endif %}
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endif %}
+    {% if menu.menuPost is defined %}
+    <ul class="dropdown-menu">
+        {% for post in menu.menuPost %}
+        <li class="dropdown-item">
+            <a href="{{url(post.postSlug ~ '-' ~ post.postID)}}" class="nav-link {{child.menuClass}}">
+                {{post.postTitle}}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if menu.menuCategory is defined %}
+    <ul class="dropdown-menu">
+        {% for cat in menu.menuCategory %}
+        <li class="dropdown-item">
+            <a href="{{url(cat.categorySlug, [cat.categoryID])}}" class="nav-link {{child.menuClass}}">
+                {{cat.categoryName}}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</li>
+{% endif %}
+{% endmacro %}

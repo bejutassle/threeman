@@ -1,0 +1,24 @@
+{% if app.server('HTTP_X_PJAX') is null %}
+{% include ('/layout/header.twig') %}
+{% endif %}
+{% set output %}
+<!-- Content Wrapper. Contains page content -->
+<div class="{{app.config('app.view.fragment')}}" data-title="{{title}}">
+    {% include ('/layout/script.twig') %}
+    {#
+    {% include ('/layout/breadcrumb.twig') with breadcrumbs %}
+    #}
+    {% block content %}{% endblock %}
+</div>
+<!-- /.content-wrapper -->
+{% endset %}
+{% if tpl.minify %}
+{% spaceless %}
+{{output}}
+{% endspaceless %}
+{% else %}
+{{output}}
+{% endif %}
+{% if app.server('HTTP_X_PJAX') is null %}
+{% include ('/layout/footer.twig') %}
+{% endif %}

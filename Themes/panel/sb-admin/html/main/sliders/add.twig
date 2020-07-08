@@ -1,0 +1,201 @@
+{% extends "content.twig" %}
+{% block content %}
+<section class="container-fluid">
+    <form id="{{str.random(10)}}" data-form="true" form="add" action="{{url('current')}}" method="POST" data-type="JSON" autocomplete="{{str.random(10)}}" enctype="multipart/form-data">
+        <input type="hidden" name="token" value="{{csrf_token}}">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="h5 mb-1 text-gray-800">{{pagetitle}}</h1>
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.name'|t}}</label>
+                                <input type="text" class="form-control" name="name">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.title'|t}}</label>
+                                <input type="text" class="form-control" name="title">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.text'|t}}</label>
+                                <textarea class="form-control" name="text" rows="5"></textarea>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.type'|t}}</label>
+                                <select class="form-control" name="type" data-select="true">
+                                    {% for key, type in sliderType %}
+                                    <option value="{{type}}">{{lang(str.slug(type))}}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 mb-sm-3">
+                                <div class="controls">
+                                    <label class="control-label">{{'admin.form.image'|t}}</label>
+                                    <input 
+                                    type="file" 
+                                    name="image" 
+                                    data-file="true" 
+                                    data-text="{{'admin.select-file'|t}}" 
+                                    data-placeholder="{{'admin.no-select-file'|t}}" 
+                                    data-input="true" 
+                                    data-dragdrop="true" 
+                                    data-badge="true" 
+                                    data-badgeName="badge-danger" 
+                                    data-btnClass="btn-primary rounded-right-0 rounded-left data-pointer" 
+                                    data-htmlIcon="<span class='fa fa-folder-open-o pr-1'></span>" 
+                                    data-buttonBefore="true"
+                                    >
+                                    <span class="information"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                <img data-img="preview" class="field-image-preview img-thumbnail">
+                            </div>
+                        </div>
+                        <div class="form-group" data-main-collapse="url-button">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.button'|t}}</label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="button_status" value="true">
+                                        {{'admin.form.show'|t}}
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="button_status" value="false" checked>
+                                        {{'admin.form.hide'|t}}
+                                    </label>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" data-sub-collapse="url-button" data-val-collapse="true">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.text'|t}}</label>
+                                <input type="text" class="form-control" name="button_text">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" data-sub-collapse="url-button" data-val-collapse="true">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.url'|t}}</label>
+                                <input type="text" class="form-control" name="url">
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" data-sub-collapse="url-button" data-val-collapse="true">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.float'|t}}</label>
+                                <select class="form-control" name="button_float" data-select="true">
+                                    {% for key, float in sliderFloat %}
+                                    <option value="{{float}}">{{lang(str.slug(float))}}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" data-sub-collapse="url-button" data-val-collapse="true">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.color'|t}}</label>
+                                <div class="input-group" data-color-picker="true">
+                                    <input type="text" class="form-control" name="button_color" value="#fafafa">
+                                    <div class="input-group-addon">
+                                        <i></i>
+                                    </div>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" data-sub-collapse="url-button" data-val-collapse="true">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.background-color'|t}}</label>
+                                <div class="input-group" data-color-picker="true">
+                                    <input type="text" class="form-control" name="button_bg_color" value="#2abbdd">
+                                    <div class="input-group-addon">
+                                        <i></i>
+                                    </div>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" data-sub-collapse="url-button" data-val-collapse="true">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.border-color'|t}}</label>
+                                <div class="input-group" data-color-picker="true">
+                                    <input type="text" class="form-control" name="button_border_color" value="#142b40">
+                                    <div class="input-group-addon">
+                                        <i></i>
+                                    </div>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="controls">
+                                <label class="control-label">{{'admin.form.status'|t}}</label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="status" value="1" checked>
+                                        {{'admin.form.active'|t}}
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="status" value="0">
+                                        {{'admin.form.passive'|t}}
+                                    </label>
+                                </div>
+                                <span class="information"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <input type="submit" value="{{'admin.form.submit'|t}}" class="btn btn-block btn-primary btn-lg">
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </form>
+</section>
+<script type="text/nanoscript">
+    $(document).on('change', '[data-file="true"]', function(event) {
+    event.preventDefault();
+    ImagePreview(this);
+});
+
+function ImagePreview(input) {
+     for(var i =0; i< input.files.length; i++){
+         if (input.files[i]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+               var img = $('[data-img="preview"]');
+               img.attr('src', e.target.result);
+               img.show();
+            }
+            reader.readAsDataURL(input.files[i]);
+           }
+        }
+}
+</script>
+{% endblock %}
